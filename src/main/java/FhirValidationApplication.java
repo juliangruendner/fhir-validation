@@ -3,6 +3,7 @@ import ca.uhn.fhir.context.support.DefaultProfileValidationSupport;
 import ca.uhn.fhir.parser.IParser;
 import ca.uhn.fhir.validation.FhirValidator;
 import ca.uhn.fhir.validation.SingleValidationMessage;
+import ca.uhn.fhir.validation.ValidationOptions;
 import ca.uhn.fhir.validation.ValidationResult;
 import org.hl7.fhir.common.hapi.validation.support.CommonCodeSystemsTerminologyService;
 import org.hl7.fhir.common.hapi.validation.support.InMemoryTerminologyServerValidationSupport;
@@ -25,7 +26,7 @@ public class FhirValidationApplication {
     private static Observation getObservationFromFile(FhirContext ctx) throws FileNotFoundException {
         Path currentRelativePath = Paths.get("");
         String basePath = currentRelativePath.toAbsolutePath().toString();
-        String inputJson = basePath + "/src/input-data/labObservationBroken.json";
+        String inputJson = basePath + "/src/input-data/labObservationCorrect.json";
         IParser parser = ctx.newJsonParser();
         Observation obs = parser.parseResource(Observation.class, new FileReader(inputJson));
         System.out.println("basePath = " +inputJson);
@@ -66,9 +67,8 @@ public class FhirValidationApplication {
         validator.registerValidatorModule(instanceValidator);
 
 
-        // ValidationOptions valOpts = new ValidationOptions()
-        //
-        // .addProfile("https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.laborbefund/1.0.1/files/147497");
+        //ValidationOptions valOpts = new ValidationOptions()
+        //valOpts.addProfile("https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.laborbefund/1.0.1/files/147497");
 
         ValidationResult result =
                 validator.validateWithResult(obs);
